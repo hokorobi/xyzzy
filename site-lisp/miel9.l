@@ -94,7 +94,7 @@
  ; compressed "-----c"
  (interactive)
  (let ((attr nil) (x6 "-") (x5 "-") (x4 "-") (x3 "-") (x2 "-") (x1 "-"))
-   (setq attr (car (get-file-info file)))
+   (setq attr (get-file-attributes file))
    (if (= 1 (// attr 2048))
        (setq x1 "c"))
    (if (= 1 (// (mod attr 2048) 32))
@@ -291,9 +291,15 @@
      (setq file (car files))
      (setq mode (mode-attributes-string file))
      (setq size (file-length file))
-     (if (> (parse-integer (format nil "~A" size)) 99999999)
-         (setq size "99999999"))
-     (setq date (format-date-string "%y/%m/%d %H:%M:%S" (cadr (get-file-info file))))
+     (if (equal nil size)
+         (progn
+           (setq size 0)
+           (setq date "00/00/00 00:00:00"))
+       (progn
+         (if (> (parse-integer (format nil "~A" size)) 99999999)
+             (setq size "99999999"))
+         (setq date (format-date-string "%y/%m/%d %H:%M:%S" (cadr (get-file-info file))))
+         ))
      (setq files-list
            (cons (format nil " ~A ~8@A ~A ~A\n" mode size date file) files-list))
      (setq files (cdr files)))
