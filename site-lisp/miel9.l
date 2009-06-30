@@ -1,17 +1,18 @@
 ;;; -*- Mode: Lisp -*-
 ;;; miel9.el  往年の著名な DOS-Filer Miel.exe の clone
 ;;; -------
-;;; copyright (c)2004-06-22 by Hideo HAGA
-;;; revision 0.1 2004-06-27 by Hideo HAGA
-;;; revision 0.2 2004-06-28 by Hideo HAGA
-;;; revision 0.3 2004-06-30 by Hideo HAGA
-;;; revision 0.4 2004-07-01 by Hideo HAGA
-;;; revision 0.5 2004-07-07 by Hideo HAGA
-;;; revision 0.6 2004-11-29 by Hideo HAGA   ; 構造の見直し
-;;; revision 0.7 2004-11-29 by Hideo HAGA   ; 構造の再構築(基本機能)
-;;; revision 0.8 2004-12-05 by Hideo HAGA   ; 追加機能検討
-;;; revision 0.9 2006-10-08 by Hideo HAGA   ; カーソルを移動元に戻す対応
-;;; revision 1.0 2009-06-21 by Hideo HAGA   ; xyzzyLispへの移植 09-06-21～
+;;; copyright (c)  2004-06-22 by Hideo HAGA
+;;; revision 0.1   2004-06-27 by Hideo HAGA
+;;; revision 0.2   2004-06-28 by Hideo HAGA
+;;; revision 0.3   2004-06-30 by Hideo HAGA
+;;; revision 0.4   2004-07-01 by Hideo HAGA
+;;; revision 0.5   2004-07-07 by Hideo HAGA
+;;; revision 0.6   2004-11-29 by Hideo HAGA       ; 構造の見直し
+;;; revision 0.7   2004-11-29 by Hideo HAGA       ; 構造の再構築(基本機能)
+;;; revision 0.8   2004-12-05 by Hideo HAGA       ; 追加機能検討
+;;; revision 0.9   2006-10-08 by Hideo HAGA       ; カーソルを移動元に戻す対応
+;;; revision 0.9.0 2009-06-21 by Hideo HAGA       ; xyzzyLispへの移植 09-06-21～
+;;; revision 0.9.1 2009-06-30 by Shinichirou TADA ; 関数 miel-make-files-list のバグFIX
 
 ; ----------
 
@@ -25,10 +26,9 @@
 (defvar Miel-current-directory nil)         ; 現在の対象ディレクトリ
 (defvar Miel-edit-filename nil)             ; 編集対象ファイル名
 (defvar Miel-edit-buffer nil)               ; 編集バッファ名一時記憶変数
-;(defvar Miel-cursor-overlay nil)            ; カーソルオーバーレイオブジェクト
-;(defvar Miel-mode-line-strings nil)         ; モードライン表示文字列
 (defvar Miel-mode-line-format               ; モードライン定義
  "--%*- %b (%M) [%k:%l] %P %f")
+;  "( %M ) %P %f")
 
 ; ----------
 
@@ -73,8 +73,7 @@
   (t
    (delete-buffer Miel-edit-buffer)                 ; 編集バッファを削除
    (setq Miel-edit-buffer nil)                      ; リセット
-   (miel (default-directory))
-   )))                    ; Miel を再起動
+   (miel (default-directory)))))                    ; Miel を再起動
 
 ; ----------
 
@@ -111,25 +110,24 @@
 
 ; ----------
 
-;(defun set-cursor-overlay ()
-;  ; カーソルオーバーレイの設定
-;  (save-excursion
-;    (setq Miel-cursor-overlay
-;         (make-overlay (point) (progn (end-of-line) (point))))
-;    (overlay-put
-;     Miel-cursor-overlay
-;     'face
-;     'highlight)))
-
-; ----------
-
-;(defun move-cursor-overlay ()
-;  ; カーソルオーバーレイを移動する
-;  (save-excursion
-;    (move-overlay
-;     Miel-cursor-overlay
-;     (point)
-;     (progn (end-of-line) (point)))))
+(defun miel-move-cursor-overlay ()
+ ; 以前の行の属性を消して、現在行をハイライト
+ (clear-all-text-attributes)
+ (save-excursion
+   (beginning-of-line)
+   (let ((color))
+     (if (equal #\d (progn (forward-char) (char-after (point))))
+         ; ディレクトリなら
+         (setq color 1) ; RED
+       ; ファイルなら
+       (setq color 4))  ; BLUE
+     (set-text-attribute
+      (progn (beginning-of-line) (point))
+      (progn (end-of-line) (point))
+      'line
+      :bold t
+      :foreground color
+      :underline t))))
 
 ; ----------
 
@@ -137,7 +135,7 @@
  ; 先頭の行を表示する
  (interactive)
  (beginning-of-buffer)
-;  (move-cursor-overlay)
+ (miel-move-cursor-overlay)
  (miel-browse-file-head))
 
 ; ----------
@@ -147,7 +145,7 @@
  (interactive)
  (end-of-buffer)
  (forward-line -1)
-;  (move-cursor-overlay)
+ (miel-move-cursor-overlay)
  (miel-browse-file-head))
 
 ; ----------
@@ -156,7 +154,7 @@
  ; 次の行を表示する
  (interactive)
  (forward-line)
-;  (move-cursor-overlay)
+ (miel-move-cursor-overlay)
  (miel-browse-file-head))
 
 ; ----------
@@ -165,7 +163,7 @@
  ; 前の行を表示する
  (interactive)
  (forward-line -1)
-;  (move-cursor-overlay)
+ (miel-move-cursor-overlay)
  (miel-browse-file-head))
 
 ; ----------
@@ -174,7 +172,7 @@
  ; 指定行を表示する
  (interactive)
  (goto-line no)
-;  (move-cursor-overlay)
+ (miel-move-cursor-overlay)
  (miel-browse-file-head))
 
 ; ----------
@@ -186,12 +184,12 @@
  (beginning-of-line)
  (let ((mark-flag
         (format nil "~C"
-         (char-after (point))))
+                (char-after (point))))
        (dir-flag
         (progn
           (forward-char 1)
           (format nil "~C"
-           (char-after (point))))))
+                  (char-after (point))))))
    (cond
     ((equal dir-flag "d")
      ; ディレクトリなら
@@ -231,7 +229,7 @@
             (progn
               (forward-char 1)
               (format nil "~C"
-               (char-after (point))))))
+                      (char-after (point))))))
        (setq filename (cons dir-flag filename))))))
 
 ; ----------
@@ -280,7 +278,7 @@
 
 ; この関数に何かしらバグ？あり。⇒　ホームディレクトリの親に移動しようとすると
 ; エラー（指定されたファイル../が見つかりません）になる⇒EmacsではOK？謎。
-; 2009-06-28(Sun) by Hideo HAGA
+; 2009-06-28(Sun) by Hideo HAGA ⇒ ◎バグFIX 2009-06-30(Mon) by Shinichirou TADA
 
 (defun miel-make-files-list ()
  ; ファイル一覧リストを生成する
@@ -291,11 +289,13 @@
      (setq file (car files))
      (setq mode (mode-attributes-string file))
      (setq size (file-length file))
-     (if (equal nil size)
+     ; ///// 以下、バグFIXのために処理追加 2009-06-30(Mon) by Shinichirou TADA
+     (if (equal nil size) ; ドライブに対して file-length を実行すると nil が返る
          (progn
            (setq size 0)
            (setq date "00/00/00 00:00:00"))
        (progn
+         ; ///// 以上、バグFIXのために処理追加 2009-06-30(Mon) by Shinichirou TADA
          (if (> (parse-integer (format nil "~A" size)) 99999999)
              (setq size "99999999"))
          (setq date (format-date-string "%y/%m/%d %H:%M:%S" (cadr (get-file-info file))))
@@ -324,7 +324,6 @@
  (cd dir)
  (setq Miel-current-directory (default-directory))
  (miel-list-files)
-;  (set-cursor-overlay)
  ; カーソルを対象行に移動する
  (cond
   ((string= Miel-previous-dir " ")    ; ファイルを閉じた後の場合
@@ -338,12 +337,12 @@
     t)
    (beginning-of-line)
    (setq Miel-previous-dir " ")))
-;  (move-cursor-overlay)
+ (miel-move-cursor-overlay)
  (delete-other-windows)
  (split-window (truncate (* Miel-window-height Miel-window-ratio)))
  (miel-browse-file-head)
  ; モードラインの設定
- (let ((str-dir))
+ (let ((str-dir (format nil " ~40@A   " (default-directory))))
    (setq mode-line-format (concat str-dir Miel-mode-line-format)))
  (update-mode-line)
  (setq buffer-read-only t))
@@ -353,7 +352,7 @@
 ;;; Miel mode メジャーモード関数本体
 
 (defun miel-mode ()
- ; 往年の DOS-Filer Miel.exe モドキ
+ ; 往年の著名な DOS-Filer Miel.exe の clone
  (interactive)
  (delete-other-windows)
  (setq Miel-window-height (window-height))
