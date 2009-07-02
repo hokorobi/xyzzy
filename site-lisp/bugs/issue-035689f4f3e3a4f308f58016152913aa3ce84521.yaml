@@ -5,8 +5,8 @@ type: :feature
 component: miel
 release: 
 reporter: hokorobi <syuheisakuya@hotmail.com>
-status: :unstarted
-disposition: 
+status: :closed
+disposition: :fixed
 creation_time: 2009-07-02 15:12:24.710000 Z
 references: []
 
@@ -15,4 +15,8 @@ log_events:
 - - 2009-07-02 15:12:25.803000 Z
   - hokorobi <syuheisakuya@hotmail.com>
   - created
+  - ""
+- - 2009-07-02 17:12:11.741000 Z
+  - hokorobi <syuheisakuya@hotmail.com>
+  - closed with disposition fixed
   - ""

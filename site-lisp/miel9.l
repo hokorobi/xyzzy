@@ -28,6 +28,9 @@
 (defvar Miel-edit-buffer nil)               ; 編集バッファ名一時記憶変数
 (defvar Miel-mode-line-format               ; モードライン定義
  "--%*- %b (%M) [%k:%l] %P %f")
+(defvar Miel-frame-name "miel")             ; フレーム名
+(defvar Miel-pwd-buffer-name "[ Show Pwd ]")
+(defvar Miel-browser-buffer-name "[ File Browser ]")
 ;  "( %M ) %P %f")
 
 ; ----------
@@ -52,6 +55,7 @@
  (define-key *miel-mode-map* '(#\SPC)  'miel-mark-file)
  ; 削除
  (define-key *miel-mode-map* '(#\d)    'miel-delete-file))
+ (define-key *miel-mode-map* '(#\q)    'miel-quit)
 ; kill-buffer キーバインドの再定義(global-map でないとダメ)
 (define-key *global-keymap*   '(#\C-x #\k) 'miel-delete-buffer)
 
@@ -66,10 +70,11 @@
   ((equal Miel-edit-buffer nil)                     ; Mielが編集を起動していなければ
    (delete-other-windows)
    (cond
-    ((find-name-buffer "[ File Browser ]")
-     (delete-buffer "[ File Browser ]"))
+    ((find-name-buffer Miel-browser-buffer-name)
+     (delete-buffer Miel-browser-buffer-name))
     (t nil))
-   (delete-buffer (selected-buffer)))               ; カレントバッファを削除
+;   (delete-buffer (selected-buffer)))               ; カレントバッファを削除
+   )
   (t
    (delete-buffer Miel-edit-buffer)                 ; 編集バッファを削除
    (setq Miel-edit-buffer nil)                      ; リセット
@@ -256,7 +261,7 @@
  ; 現在行のファイルの内容を別ウィンドウに読み込み、表示する
  (interactive)
  (let ((win (selected-window))
-       (buf2 (get-buffer-create "[ File Browser ]"))
+       (buf2 (get-buffer-create Miel-browser-buffer-name))
        (file (miel-get-filename)))        ; ファイル名取得
    (save-excursion
      (set-buffer buf2)                    ; 編集対象バッファを切替える
@@ -316,6 +321,38 @@
 
 ; ----------
 
+(defun frame-get ()
+  ; Miel のフレームを取得
+  (find-pseudo-frame Miel-frame-name))
+
+; ----------
+
+(defun restore ()
+  ; Miel のフレームを表示
+  (interactive)
+  (let ((frame (frame-get)))
+    (when frame
+      (select-pseudo-frame frame)
+      (when (find-buffer Miel-pwd-buffer-name)
+        (switch-to-buffer Miel-pwd-buffer-name))
+      )))
+
+; ----------
+
+(defun miel-quit ()
+  ; miel-mode の終了
+  (interactive)
+  (let ((pf (find-pseudo-frame Miel-frame-name)))
+    (when pf
+      (delete-pseudo-frame pf)
+      (when (find-buffer Miel-browser-buffer-name)
+        (delete-buffer Miel-browser-buffer-name))
+      (when (find-buffer Miel-pwd-buffer-name)
+        (delete-buffer Miel-pwd-buffer-name))
+      )))
+
+; ----------
+
 (defun miel (dir)
  ; Miel メイン処理関数
  ; ディレクトリ一覧を表示してファイルの情報を表示
@@ -354,9 +391,12 @@
 (defun miel-mode ()
  ; 往年の著名な DOS-Filer Miel.exe の clone
  (interactive)
- (delete-other-windows)
+  (when (frame-get)
+    (restore)
+    (return-from miel-mode))
+ (new-pseudo-frame Miel-frame-name)
  (setq Miel-window-height (window-height))
- (switch-to-buffer "[ Show Pwd ]")
+ (switch-to-buffer Miel-pwd-buffer-name)
  (setq Miel-main-window (selected-window))
  ; メジャーモードの設定
  (setq major-mode 'miel-mode)
