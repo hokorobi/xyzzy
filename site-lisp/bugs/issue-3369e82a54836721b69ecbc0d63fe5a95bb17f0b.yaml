@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: add vi key-bind
+desc: cursor move h, j, k, l
+type: :feature
+component: miel
+release: 
+reporter: hokorobi <syuheisakuya@hotmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-07-02 15:05:48.272000 Z
+references: []
+
+id: 3369e82a54836721b69ecbc0d63fe5a95bb17f0b
+log_events: 
+- - 2009-07-02 15:05:53.006000 Z
+  - hokorobi <syuheisakuya@hotmail.com>
+  - created
+  - ""

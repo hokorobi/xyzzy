@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: add correspond frame
+desc: ""
+type: :feature
+component: miel
+release: 
+reporter: hokorobi <syuheisakuya@hotmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-07-02 15:12:24.710000 Z
+references: []
+
+id: 035689f4f3e3a4f308f58016152913aa3ce84521
+log_events: 
+- - 2009-07-02 15:12:25.803000 Z
+  - hokorobi <syuheisakuya@hotmail.com>
+  - created
+  - ""

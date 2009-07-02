@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: packaging
+desc: ""
+type: :feature
+component: miel
+release: 
+reporter: hokorobi <syuheisakuya@hotmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-07-02 16:34:27.631000 Z
+references: []
+
+id: a1ba990891e417ba079382869e48db2d5cacc9fa
+log_events: 
+- - 2009-07-02 16:34:28.866000 Z
+  - hokorobi <syuheisakuya@hotmail.com>
+  - created
+  - ""

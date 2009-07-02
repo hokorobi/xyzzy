@@ -1,0 +1,18 @@
+--- !ditz.rubyforge.org,2008-03-06/issue 
+title: add close miel-mode easily
+desc: for example hits 'q' close Show Pwd buffer and File Browser buffer
+type: :feature
+component: miel
+release: 
+reporter: hokorobi <syuheisakuya@hotmail.com>
+status: :unstarted
+disposition: 
+creation_time: 2009-07-02 15:08:49.522000 Z
+references: []
+
+id: 4face8ae6496c9e40386dcef97db0672d041a0e9
+log_events: 
+- - 2009-07-02 15:08:51.600000 Z
+  - hokorobi <syuheisakuya@hotmail.com>
+  - created
+  - ""
