@@ -1,0 +1,54 @@
+;;; -*- Mode: Lisp; Package: EDITOR -*-
+;;;
+;;; This file is not part of xyzzy.
+;;;
+;$Id: config.l.sample 777 2007-12-21 18:39:28Z torihat $
+;
+; config.l sample
+;
+
+(in-package "twitter")
+
+;;; -----------------------------------------------------------------
+;;; Twitter API
+;;; -----------------------------------------------------------------
+;(require "twitter/api-xml")	; XMLを使用
+
+;;; -----------------------------------------------------------------
+;;; アカウント設定
+;;; -----------------------------------------------------------------
+;(setq *username* "username")	; ユーザー名（設定しなければ起動時に入力）
+;(setq *password* "password")	; パスワード（設定しなければ起動時に入力）
+
+;;; -----------------------------------------------------------------
+;;; 配色設定
+;;; -----------------------------------------------------------------
+;(setq *attribute-item*
+;      (list (cons 'status (list (cons 'time     (list :foreground 10))
+;				(cons 'user     (list :foreground 11))
+;				(cons 'name     (list :foreground  9))
+;				(cons 'location (list :foreground 14))
+;				(cons 'text     nil)))
+;	    (cons 'direct (list (cons 'time     (list :foreground 11))
+;				(cons 'user     (list :foreground 12))
+;				(cons 'name     (list :foreground 13))
+;				(cons 'location (list :foreground 14))
+;				(cons 'text     nil)))
+;	    (cons 'user   (list (cons 'time     (list :foreground 14))
+;				(cons 'user     (list :foreground 11))
+;				(cons 'name     (list :foreground 12))
+;				(cons 'location (list :foreground  9))
+;				(cons 'text     nil)))
+;	    ))
+;; 区切り線
+;(setq *attribute-line* (list :foreground 15))
+
+;;; -----------------------------------------------------------------
+;;; その他設定
+;;; -----------------------------------------------------------------
+;; 自動更新の間隔（秒）
+;(setq *summary-auto-reload-interval* 600)
+;; 検索の取得件数 (-100)
+;(setq *summary-search-max* 20)
+;; 検索時の言語指定
+;(setq *search-lang* "ja")

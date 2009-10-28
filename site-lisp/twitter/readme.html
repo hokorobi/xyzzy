@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="Shift_JIS"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja">
+	<head>
+		<link rel="stylesheet" href="readme.css" type="text/css" media="screen,print" />
+		<meta http-equiv="Content-Type" content="text/html; charset=Shift_JIS" />
+		<meta http-equiv="Content-Style-Type" content="text/css" />
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
+		<title>twitter-mode</title>
+	</head>
+	<body>
+		<h1>twitter-mode</h1>
+		<p class="copyright">
+			$Id: readme.html 815 2009-03-23 05:00:54Z torihat $
+		</p>
+		<h2>目次</h2>
+		<p>
+			<ul>
+				<li><a href="#summary">概要</a></li>
+				<li><a href="#license">利用条件等</a></li>
+				<li><a href="#enviroment">動作環境</a></li>
+				<li><a href="#install">インストール</a></li>
+				<li><a href="#settings">設定</a></li>
+				<li><a href="#start">起動</a></li>
+				<li><a href="#keybind">キーバインド</a></li>
+				<li><a href="#limits">制限事項</a></li>
+				<li><a href="#changelog">ChangeLog</a></li>
+			</ul>
+		</p>
+		<h2 id=summary>概要</h2>
+		<p>
+			twitter-modeは<a href="http://www.jsdlab.co.jp/~kamei/">xyzzy</a>上で動く<a href="http://twitter.com/">Twitter</a>クライアントのようなものです。
+		</p>
+		<h2 id=license>利用条件等</h2>
+		<p>
+			<a href="LICENSE.txt">LICENSE.txt</a>をご覧下さい。
+		</p>
+		<h2 id=enviroment>動作環境</h2>
+		<p>
+			<ul>
+				<li><a href="http://www.jsdlab.co.jp/~kamei/">xyzzy</a>-0.2.2.235 以降</li>
+				<li><a href="http://www7a.biglobe.ne.jp/~hat/xyzzy/dl.html#junk-library">junk-library</a>/0.0.0.6 以降</li>
+				<li><a href="http://www7a.biglobe.ne.jp/~hat/xyzzy/dl.html#xml-parser-modoki">xml-parser-modoki</a>/0.0.0.8 以降</li>
+				<li><a href="http://miyamuko.s56.xrea.com/">miyamuko</a>さんの<a href="http://miyamuko.s56.xrea.com/xyzzy/json/intro.htm">json</a>/0.1.1 以降</li>
+			</ul>
+		</p>
+		<p>
+			利用するには、<a href="http://twitter.com/">Twitter</a>のアカウントが必要です。
+		</p>
+		<h2 id=install>インストール</h2>
+		<p>
+			<a href="http://www7a.biglobe.ne.jp/~hat/xyzzy/dl.html#NetInstaller">NetInstaller</a>でインストールするか、<a href="http://www7a.biglobe.ne.jp/~hat/xyzzy/dl.html#twitter-mode">ダウンロード</a>したアーカイブを system-root 以下に展開してください。
+		</p>
+		<h2 id=settings>設定</h2>
+		<p>
+			ni-autoload を有効にしていない場合は、以下を .xyzzy または siteinit.l に書いてください。
+		</p>
+		<pre>(autoload 'twitter        "twitter/defs" t)
+(autoload 'twitter-toggle "twitter/defs" t)</pre>
+		<p>
+			設定は、site-lisp/twitter/config.l.sample を ~/.twitter/config.l にコピーして必要箇所を記入してください。（このファイルはなくても利用できます）
+		</p>
+		<h2 id=start>起動</h2>
+		<p>
+			xyzzy で以下を実行します。
+		</p>
+		<pre>M-x twitter</pre>
+		<p>
+			いったん引っ込めたり、また出したりする場合は以下を実行します。
+		</p>
+		<pre>M-x twitter-toggle</pre>
+		<p>
+			これらはデフォルトではキーに割り当てられていませんので、必要に応じて設定してください。
+		</p>
+		<h2 id=keybind>キーバインド</h2>
+		<p>
+			<h3 id=summary_buffer>summary buffer でのキーバインド</h3>
+			<table class="data_list">
+				<tr><td align="center"><strong>e</strong></td><td>ポップアップメニューを表示</td></tr>
+				<tr><td align="center"><strong>右クリック</strong></td><td>ポップアップメニューを表示</td></tr>
+				<tr><td align="center"><strong>j</strong></td><td>次のUpdate</td></tr>
+				<tr><td align="center"><strong>k</strong></td><td>前のUpdate</td></tr>
+				<tr><td align="center"><strong>R</strong></td><td>現在の一覧を更新</td></tr>
+				<tr><td align="center"><strong>f</strong></td><td>Recent一覧を開く</td></tr>
+				<tr><td align="center"><strong>r</strong></td><td>Reply一覧を開く</td></tr>
+				<tr><td align="center"><strong>d</strong></td><td>Direct Message一覧を開く</td></tr>
+				<tr><td align="center"><strong>s</strong></td><td>自分のUpdate一覧を開く</td></tr>
+				<tr><td align="center"><strong>p</strong></td><td>Public Timelineを開く</td></tr>
+				<tr><td align="center"><strong>i</strong></td><td>Followingsを開く</td></tr>
+				<tr><td align="center"><strong>l</strong></td><td>Followersを開く</td></tr>
+				<tr><td align="center"><strong>c</strong></td><td>表示対象ユーザーを設定</td></tr>
+				<tr><td align="center"><strong>C</strong></td><td>表示対象ユーザーをクリア</td></tr>
+				<tr><td align="center"><strong>u</strong></td><td>Updateを送信</td></tr>
+				<tr><td align="center"><strong>a</strong></td><td>Replyを送信</td></tr>
+				<tr><td align="center"><strong>m</strong></td><td>Direct Messageを送信</td></tr>
+				<tr><td align="center"><strong>/</strong></td><td>検索</td></tr>
+				<tr><td align="center"><strong>T</strong></td><td>Trendsを取得・更新</td></tr>
+				<tr><td align="center"><strong>o</strong></td><td>ブラウザで開く</td></tr>
+				<tr><td align="center"><strong>t</strong></td><td>自動更新のOn/Off</td></tr>
+				<tr><td align="center"><strong>q</strong></td><td>終了</td></tr>
+			</table>
+		</p>
+		<h2 id=limits>制限事項</h2>
+		<p>
+			Twitter API側の制限により、データ取得の実行は60分に70回までしか行うことができません。
+		</p>
+		<h2 id=changelog>ChangeLog</h2>
+		<dl>
+			<dt>2009/03/16: 0.0.0.5-alpha</dt>
+			<dd>
+				<ul>
+					<li>Twitter Searchをテスト追加。</li>
+					<li>ついでにTrendsも。</li>
+				</ul>
+			</dd>
+			<dt>2008/07/03: 0.0.0.4-alpha</dt>
+			<dd>
+				<ul>
+					<li>json formatに対応。</li>
+					<li>データ保存ディレクトリをホスト別に分けるようにした。</li>
+				</ul>
+			</dd>
+			<dt>2008/07/02: 0.0.0.3-alpha</dt>
+			<dd>
+				<ul>
+					<li>source parameter設定を変更。</li>
+				</ul>
+			</dd>
+			<dt>2008/03/27: 0.0.0.2-alpha</dt>
+			<dd>
+				<ul>
+					<li>xyzzy Part15の901を修正。(__)</li>
+				</ul>
+			</dd>
+			<dt>2008/02/19: 0.0.0.1-alpha</dt>
+			<dd>
+				<ul>
+					<li>初版。</li>
+				</ul>
+			</dd>
+		</dl>
+		<!--
+		<h2 id=todo>ToDo</h2>
+		<p>
+			<ul>
+				<li></li>
+			</ul>
+		</p>
+			-->
+		<hr>
+	</body>
+</html>
