@@ -27,6 +27,8 @@
 ;(defvar *summary-search-history* nil)
 ;(defvar *summary-search-histroy-max* 10)
 
+(defvar *summary-friends-timeline-count* 20)
+
 (defvar *summary-regexp-keyword-list*
   (compile-regexp-keyword-list
    '(

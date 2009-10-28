@@ -127,7 +127,7 @@
     (junk::junk-http-add-header "X-Twitter-Client" *client-name* headers)
     (junk::junk-http-add-header "X-Twitter-Client-Version" *client-version* headers)
     (when *client-url*
-      (junk::junk-http-add-header "X-Twitter-Client-Url" *client-url* headers))
+      (junk::junk-http-add-header "X-Twitter-Client-URL" *client-url* headers))
     (when (and username password)
       (junk::junk-http-add-header "Authorization"
 				  (concat "Basic "
@@ -245,7 +245,7 @@
     (fetch-statuses url tmpfile headers force)))
 
 (defun statuses-friends_timeline (username password &optional force target)
-  (let* ((url (url-friends_timeline target))
+  (let* ((url (url-friends_timeline target *summary-friends-timeline-count*))
 	 (tmpfile (local-file url username))
 	 (headers (create-request-headers username password)))
     (fetch-statuses url tmpfile headers force)))

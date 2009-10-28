@@ -286,12 +286,12 @@
 	      (format nil "user_timeline/~A.json" target)
 	    "user_timeline.json")))
 
-(defun url-friends_timeline (&optional target)
+(defun url-friends_timeline (&optional target count)
   (concat *api-url-root*
 	  "statuses/"
 	  (if target
-	      (format nil "friends_timeline/~A.json" target)
-	    "friends_timeline.json")))
+	      (format nil "friends_timeline/~A.json?count=~A" target count)
+            (format nil "friends_timeline.json?count=~A" count))))
 (defun url-replies_timeline ()
   (concat *api-url-root*
 	  "statuses/"

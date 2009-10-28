@@ -52,3 +52,5 @@
 ;(setq *summary-search-max* 20)
 ;; ŒŸõ‚ÌŒ¾Œêw’è
 ;(setq *search-lang* "ja")
+;; friends-timeline ‚Åæ“¾‚·‚éŒ”
+;(setq *summary-friends-timeline-count* 20)

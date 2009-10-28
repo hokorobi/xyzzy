@@ -223,12 +223,12 @@
 	      (format nil "user_timeline/~A.xml" target)
 	    "user_timeline.xml")))
 
-(defun url-friends_timeline (&optional target)
+(defun url-friends_timeline (&optional target count)
   (concat *api-url-root*
 	  "statuses/"
 	  (if target
-	      (format nil "friends_timeline/~A.xml" target)
-	    "friends_timeline.xml")))
+	      (format nil "friends_timeline/~A.xml?count=~A" target count)
+            (format nil "friends_timeline.xml?count=~A" count))))
 
 (defun url-replies_timeline ()
   (concat *api-url-root*
